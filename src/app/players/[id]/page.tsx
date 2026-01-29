@@ -11,12 +11,12 @@ export function generateStaticParams() {
 }
 
 export default async function PlayerProfile({
-    paramsPromise,
+    params,
   }: {
-    paramsPromise: Promise<{ id: string }>;
+    params: Promise<{ id: string }>;
   }) {
-    const params = await paramsPromise;
-  const player = (dummyData.players as Player[]).find((p) => p.id === params.id);
+    const { id } = await params;
+  const player = (dummyData.players as Player[]).find((p) => p.id === id);
 
   if (!player) {
     notFound();
