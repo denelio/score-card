@@ -10,13 +10,17 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function PlayerProfile({
-    params,
-  }: {
-    params: Promise<{ id: string }>;
-  }) {
-    const { id } = await params;
-  const player = (dummyData.players as Player[]).find((p) => p.id === id);
+export default async function PlayerProfile(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+  
+  if (!params?.id) {
+     notFound(); // Should not happen with generateStaticParams
+     return null;
+  }
+
+  const { id } = params;
+  const players = dummyData?.players as Player[] || [];
+  const player = players.find((p) => p && p.id === id);
 
   if (!player) {
     notFound();
